@@ -9,6 +9,7 @@ Só reprocessa o que mudou. Depende de sips e cwebp, ambos já no macOS
 (cwebp vem do Homebrew: brew install webp).
 """
 import pathlib
+import re
 import shutil
 import subprocess
 import sys
@@ -26,6 +27,13 @@ EXTS = {".jpg", ".jpeg", ".png", ".heic", ".webp", ".JPG", ".JPEG", ".PNG", ".HE
 def slug(nome: str) -> str:
     n = unicodedata.normalize("NFKD", nome).encode("ascii", "ignore").decode().lower()
     return "".join(c if c.isalnum() else "-" for c in n).strip("-").replace("--", "-")
+
+
+def medir(caminho: pathlib.Path) -> tuple[int, int]:
+    saida = subprocess.run(["sips", "-g", "pixelWidth", "-g", "pixelHeight", str(caminho)],
+                           capture_output=True, text=True).stdout
+    achados = [int(n) for n in re.findall(r"pixel(?:Width|Height): (\d+)", saida)]
+    return (achados[0], achados[1]) if len(achados) == 2 else (0, 0)
 
 
 def executar(cmd: list[str]) -> None:
@@ -58,12 +66,15 @@ def main() -> int:
 
     for i, origem in enumerate(fontes, 1):
         base = slug(origem.stem) or f"foto-{i:02d}"
+        maior = max(medir(origem))
         for sufixo, largura in LARGURAS.items():
             saida = DESTINO / f"{base}{sufixo}.webp"
             if saida.exists() and saida.stat().st_mtime > origem.stat().st_mtime:
                 continue
+            # nunca ampliar: uma foto pequena virava um @2x borrado e pesado
+            alvo = min(largura, maior)
             inter = tmp / f"{base}{sufixo}.png"
-            executar(["sips", "-Z", str(largura), str(origem), "--out", str(inter)])
+            executar(["sips", "-Z", str(alvo), str(origem), "--out", str(inter)])
             executar(["cwebp", "-quiet", "-q", str(QUALIDADE), str(inter), "-o", str(saida)])
             inter.unlink(missing_ok=True)
             total += saida.stat().st_size

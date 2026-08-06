@@ -14,7 +14,7 @@
 <meta property="og:site_name" content="Espaço Odontológico">
 <meta property="og:title" content="Espaço Odontológico — Onde sua saúde e seu sorriso são prioridades">
 <meta property="og:description" content="Odontologia humanizada em Feu Rosa, Serra/ES desde 2006. Nota 5,0 no Google com 178 avaliações.">
-<meta property="og:image" content="https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkp56qKrSsQtPuBp7AvdsWYVjohnp3EvT8hvYpHDDbhvPyJrgt6UVhcyyh0BGnm_QD0noOKwUkQNeeylEv1uHp_6ax6af2ijA-u_f984G7kJtox9THQfHOZMwXy8r5a3vCLsj4=w1400-h1050-k-no">
+<meta property="og:image" content="https://www.espacoodontologicoserra.com.br/assets/fotos/recepcao@2x.webp">
 <meta property="og:locale" content="pt_BR">
 <meta name="twitter:card" content="summary_large_image">
 
@@ -56,7 +56,7 @@ document.addEventListener('error',function(e){
 "url":"https://www.espacoodontologicoserra.com.br","telephone":"+5527992031738","priceRange":"$$",
 "contactPoint":[{"@type":"ContactPoint","telephone":"+5527992031738","contactType":"Agendamento","areaServed":"BR","availableLanguage":"Portuguese"},{"@type":"ContactPoint","telephone":"+5527996662788","contactType":"Atendimento","areaServed":"BR","availableLanguage":"Portuguese"}],
 "paymentAccepted":"Dinheiro, Pix, Cartão de débito, Cartão de crédito, Boleto","currenciesAccepted":"BRL","email":"clinicaespacoodontologico@outlook.com",
-"image":"https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkp56qKrSsQtPuBp7AvdsWYVjohnp3EvT8hvYpHDDbhvPyJrgt6UVhcyyh0BGnm_QD0noOKwUkQNeeylEv1uHp_6ax6af2ijA-u_f984G7kJtox9THQfHOZMwXy8r5a3vCLsj4=w1400-h1050-k-no",
+"image":"https://www.espacoodontologicoserra.com.br/assets/fotos/recepcao@2x.webp",
 "address":{"@type":"PostalAddress","streetAddress":"Rua dos Cravos, 39","addressLocality":"Serra","addressRegion":"ES","postalCode":"29172-105","addressCountry":"BR"},
 "geo":{"@type":"GeoCoordinates","latitude":-20.1741671,"longitude":-40.2072274},
 "hasMap":"https://www.google.com/maps/place/Espa%C3%A7o+Odontol%C3%B3gico/@-20.1741671,-40.2072274,17z",
@@ -158,7 +158,9 @@ h1 b{font-weight:500;color:var(--slate)}
 .selo-foto .txt{display:grid;gap:3px}
 .selo-foto .estrelas{font-size:.84rem;letter-spacing:1.5px;line-height:1}
 .selo-foto small{font-size:.75rem;color:var(--texto-2);line-height:1.2}
-.foto-destaque img{position:relative;z-index:1;border-radius:var(--r-md);aspect-ratio:4/3.5;object-fit:cover;box-shadow:var(--sombra-lg)}
+/* 16:9 é a proporção nativa da foto: qualquer box mais alto corta as
+   laterais e come o nome da clínica na parede. */
+.foto-destaque img{position:relative;z-index:1;border-radius:var(--r-md);aspect-ratio:16/9;object-fit:cover;box-shadow:var(--sombra-lg)}
 .foto-destaque::after{content:"";position:absolute;left:-26px;bottom:-26px;width:150px;height:150px;border:1px solid var(--dourado);border-radius:var(--r-md);z-index:0}
 .foto-bloco img{border-radius:var(--r-md);object-fit:cover;box-shadow:var(--sombra-lg);filter:brightness(1.07) contrast(1.04) saturate(1.03)}
 
@@ -331,7 +333,6 @@ footer a:hover{color:#fff;text-decoration:underline}
      com letra. Sobe para o topo, com a nota do Google sobre ela. */
   .hero-g .foto-destaque{order:-1;margin-bottom:6px}
   .hero{padding-top:22px}
-  .foto-destaque img{aspect-ratio:4/3}
   .selo-foto{left:14px;bottom:14px;padding:11px 15px;gap:11px}
   .selo-foto .nota{font-size:1.65rem}
   .stats-g{grid-template-columns:1fr 1fr}
@@ -410,7 +411,7 @@ footer a:hover{color:#fff;text-decoration:underline}
       <p class="hero-nota"><b>Seg a Sex 8h–18h</b> · <b>Sáb 8h–12h</b> &nbsp;·&nbsp; R. dos Cravos, 39 — Feu Rosa, Serra/ES &nbsp;·&nbsp; Pix, cartão e parcelamento próprio</p>
     </div>
     <div class="foto-destaque">
-      <img src="https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkp56qKrSsQtPuBp7AvdsWYVjohnp3EvT8hvYpHDDbhvPyJrgt6UVhcyyh0BGnm_QD0noOKwUkQNeeylEv1uHp_6ax6af2ijA-u_f984G7kJtox9THQfHOZMwXy8r5a3vCLsj4=w1400-h1050-k-no" width="800" height="700" fetchpriority="high" decoding="async" alt="Recepção do Espaço Odontológico em Feu Rosa, Serra/ES, com a marca da clínica na parede">
+      <img src="assets/fotos/recepcao.webp" srcset="assets/fotos/recepcao.webp 893w" sizes="(max-width:940px) 92vw, 46vw" width="893" height="502" fetchpriority="high" decoding="async" alt="Recepção do Espaço Odontológico em Feu Rosa, Serra/ES, com o nome da clínica na parede">
       <a class="selo-foto" href="https://www.google.com/maps/place/Espa%C3%A7o+Odontol%C3%B3gico/@-20.1741671,-40.2072274,17z" target="_blank" rel="noopener">
         <span class="nota">5,0</span>
         <span class="txt"><span class="estrelas" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span><small>178 avaliações no Google</small></span>
@@ -542,7 +543,7 @@ footer a:hover{color:#fff;text-decoration:underline}
       </ul>
       <a class="btn btn-navy" style="margin-top:34px" href="https://wa.me/5527992031738?text=Ol%C3%A1%21%20Quero%20entender%20como%20funciona%20a%20avalia%C3%A7%C3%A3o%20integrada." target="_blank" rel="noopener"><svg class="ico" aria-hidden="true"><use href="#i-wa"/></svg>Quero minha avaliação</a>
     </div>
-    <div class="foto-bloco rv"><img src="assets/fotos/consultorio-05.webp" srcset="assets/fotos/consultorio-avaliacao.webp 675w, assets/fotos/consultorio-avaliacao@2x.webp 1200w" sizes="(max-width:940px) 92vw, 46vw" width="675" height="900" alt="Consultório do Espaço Odontológico" loading="lazy" decoding="async" style="aspect-ratio:3/4"></div>
+    <div class="foto-bloco rv"><img src="assets/fotos/consultorio-05.webp" srcset="assets/fotos/consultorio-05.webp 675w, assets/fotos/consultorio-05@2x.webp 1200w" sizes="(max-width:940px) 92vw, 46vw" width="675" height="900" alt="Consultório do Espaço Odontológico" loading="lazy" decoding="async" style="aspect-ratio:3/4"></div>
   </div>
 </section>
 
