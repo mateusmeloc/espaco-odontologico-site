@@ -211,10 +211,10 @@ h1 b{font-weight:500;color:var(--slate)}
 .dep small{font-size:.75rem;color:var(--texto-2)}
 
 .ad-wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(30px,5vw,60px);align-items:center}
-.ad-g{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:660px}
-.ad{position:relative;border-radius:var(--r-sm);overflow:hidden;background:#111}
-.ad img{aspect-ratio:2/1;object-fit:cover}
-.ad span{position:absolute;left:12px;top:12px;background:rgba(22,34,58,.86);color:#fff;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;padding:5px 11px;border-radius:3px}
+.ad-g{max-width:430px}
+.ad{margin:0}
+.ad img{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:var(--r-md);box-shadow:var(--sombra-md);filter:brightness(1.04) contrast(1.02)}
+.ad figcaption{margin-top:12px;font-size:.82rem;color:var(--texto-2);line-height:1.45}
 .ad-side{display:grid;gap:18px;align-content:center}
 .nota-etica{margin-top:8px;font-size:.81rem;color:var(--texto-2);border-left:2px solid var(--dourado);padding:6px 0 6px 18px}
 
@@ -344,7 +344,6 @@ footer a:hover{color:#fff;text-decoration:underline}
   .menu{display:none;position:absolute;top:100%;left:0;right:0;background:var(--creme);flex-direction:column;gap:2px;padding:14px 24px 22px;border-bottom:1px solid var(--borda);box-shadow:var(--sombra-md)}
   .menu.aberto{display:flex}
   .menu a{padding:12px 0;font-size:1rem;display:block}
-  .ad-g{max-width:none}
   .tl-item{grid-template-columns:1fr;gap:6px}
   .hist-cred{position:static;margin-top:16px}
   .hist-foto::after,.foto-destaque::after{display:none}
@@ -516,15 +515,14 @@ footer a:hover{color:#fff;text-decoration:underline}
 <section>
   <div class="wrap ad-wrap">
     <div class="ad-g rv">
-      <div class="ad"><span>Antes</span><img src="https://pages.greatpages.com.br/lp.espacoodontologicoserra.com.br/1775854650/imagens/desktop/3483238_1_17684172826967e80303747671053742.jpg" width="800" height="400" alt="Antes do tratamento de reabilitação oral com implantes no Espaço Odontológico" loading="lazy" decoding="async"></div>
-      <div class="ad"><span>Depois</span><img src="https://pages.greatpages.com.br/lp.espacoodontologicoserra.com.br/1775854650/imagens/desktop/3483238_1_17684172826967e8030389a906341920.jpg" width="800" height="400" alt="Depois da reabilitação oral com prótese protocolo fixa no Espaço Odontológico" loading="lazy" decoding="async"></div>
+      <figure class="ad"><img src="assets/fotos/resultado-01.webp" srcset="assets/fotos/resultado-01.webp 674w, assets/fotos/resultado-01@2x.webp 943w" sizes="(max-width:940px) 88vw, 40vw" width="674" height="900" alt="Paciente do Espaço Odontológico sorrindo na clínica após concluir o tratamento" loading="lazy" decoding="async"><figcaption>Paciente do Espaço Odontológico, depois do tratamento concluído</figcaption></figure>
     </div>
     <div class="ad-side rv">
       <span class="eyebrow">Resultados</span>
-      <h2>Caso real de reabilitação</h2>
-      <p class="lead">Paciente reabilitado com prótese protocolo fixa sobre implantes. Durante todo o tratamento o paciente usa prótese provisória — <strong>você não fica sem dente em nenhuma etapa</strong>.</p>
+      <h2>Resultado real, paciente real</h2>
+      <p class="lead">Paciente da casa, fotografada na clínica depois de concluir o tratamento. Em reabilitações com implante, você usa prótese provisória do começo ao fim — <strong>não fica sem dente em nenhuma etapa</strong>.</p>
       <a class="btn btn-zap" style="justify-self:start" href="https://wa.me/5527992031738?text=Ol%C3%A1%21%20Vi%20o%20caso%20no%20site%20e%20quero%20saber%20se%20o%20meu%20tem%20solu%C3%A7%C3%A3o." target="_blank" rel="noopener"><svg class="ico" aria-hidden="true"><use href="#i-wa"/></svg>Meu caso tem solução?</a>
-      <p class="nota-etica">Imagens de antes e depois publicadas com autorização de uso de imagem do paciente, conforme o Código de Ética Odontológica. Cada caso é único e o resultado depende da avaliação individual — não há promessa de resultado.</p>
+      <p class="nota-etica">Imagem publicada com autorização de uso de imagem da paciente, conforme o Código de Ética Odontológica. Cada caso é único e o resultado depende da avaliação individual — não há promessa de resultado.</p>
     </div>
   </div>
 </section>
