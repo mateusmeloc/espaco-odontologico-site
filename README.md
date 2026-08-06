@@ -7,23 +7,34 @@ Responsável técnica: Dra. Hosana A. S. Melo — CRO-ES 5226.
 
 ## Como funciona
 
-`index.html` é autocontido: CSS, JavaScript, logo e favicon estão embutidos no
-próprio arquivo. Não há build, dependência ou servidor — abrir o arquivo no
-navegador é suficiente.
+**Nunca edite `index.html` direto — ele é gerado.** A fonte de verdade é
+`_build/template.html`; o build embute a marca como data URI e escreve o
+`index.html`.
 
-A pasta `assets/` guarda os originais usados para gerar os embutidos:
+```bash
+python3 _build/build.py          # template + assets -> index.html
+```
+
+Fotos da clínica são **arquivos separados** em `assets/fotos/`, não base64:
+carregam sob demanda, ficam em cache e mantêm o HTML abaixo de 100 KB. Para
+adicionar ou trocar fotos, salve os originais em `fotos-originais/` e rode:
+
+```bash
+python3 _build/prepare-fotos.py  # originais -> assets/fotos/*.webp (900px e @2x)
+python3 _build/build.py
+```
+
+`prepare-fotos.py` precisa do `cwebp` (`brew install webp`); `sips` já vem no
+macOS. Só reprocessa o que mudou.
 
 | Arquivo | Uso |
 |---|---|
-| `logo-original.png` | 900×227, fonte da marca |
-| `logo.webp` | 500 px, é este que está em base64 no HTML |
-| `favicon.png` | 64 px, também em base64 |
-
-Para regerar depois de trocar a marca:
-
-```bash
-sips -Z 500 assets/logo-original.png --out /tmp/l.png && cwebp -q 88 -alpha_q 100 /tmp/l.png -o assets/logo.webp
-```
+| `_build/template.html` | fonte do site — é aqui que se edita |
+| `assets/logo-original.png` | 900×227, fonte da marca |
+| `assets/logo.webp` | 500 px, embutido em base64 no HTML |
+| `assets/favicon.png` | 64 px, embutido em base64 |
+| `assets/fotos/` | fotos da clínica, servidas como arquivo |
+| `fotos-originais/` | originais em alta, entrada do `prepare-fotos.py` |
 
 ## Pendências antes de publicar no domínio definitivo
 
