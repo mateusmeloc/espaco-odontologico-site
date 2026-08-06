@@ -3,7 +3,7 @@
 Site one-page da clínica Espaço Odontológico (Feu Rosa, Serra/ES).
 Responsável técnica: Dra. Hosana A. S. Melo — CRO-ES 5226.
 
-**Status:** prévia V6, aguardando aprovação da Dra. Hosana.
+**Status:** prévia V7 — fotos reais da estrutura no ar, aguardando aprovação da Dra. Hosana.
 
 ## Como funciona
 
@@ -38,12 +38,12 @@ macOS. Só reprocessa o que mudou.
 
 ## Pendências antes de publicar no domínio definitivo
 
-- [ ] Fotos reais em alta: fachada, recepção, consultórios, equipamentos, antes/depois, retratos das 5 dentistas
-- [ ] **As 3 imagens hospedadas no GreatPages estão com 404** — o site mostra um quadro "Foto em produção" no lugar. As demais fotos ainda são hotlink de terceiros (Wix, Google) e precisam ser substituídas por arquivos locais
+- [ ] **Antes/depois** — os 2 quadros "Foto em produção" que restam. As URLs antigas do GreatPages estão em 404 e não há substituto local
+- [ ] **Fotos da Dra. Hosana** — hoje há uma só, ainda em hotlink do Wix
 - [ ] Frase da Dra. Hosana para o bloco da história
-- [ ] Respostas de convênios, atendimento infantil, valor da avaliação e estacionamento (saíram do FAQ até serem confirmadas)
-- [ ] Seção da equipe completa
-- [ ] Definir o domínio e trocar `canonical`, `og:url` e os campos `@id` / `url` do schema (4 pontos no `index.html`)
+- [ ] Seção da equipe completa (8 cirurgiãs-dentistas)
+- [ ] Logos oficiais Invisalign e Neodent (baixar dos portais de parceiro) — hoje as parcerias aparecem só como texto
+- [ ] Apontar `espacoodontologicoserra.com.br` no Registro.br (o HTML já está com esse domínio no canonical, og:url e schema)
 - [ ] GA4, Meta Pixel e Search Console no dia da publicação
 
 ## Conformidade
