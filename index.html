@@ -250,13 +250,17 @@ h1 b{font-weight:500;color:var(--slate)}
 .princ-cab{margin-top:clamp(52px,6vw,80px);border-top:1px solid rgba(255,255,255,.2);padding-top:34px;max-width:52ch}
 .princ-cab h3{font-size:clamp(1.4rem,2.6vw,1.9rem);font-weight:300}
 .princ-cab p{color:#B9C7DA;margin-top:14px;font-size:1rem}
-/* 6 itens em 3 colunas = 2 fileiras cheias. Com auto-fill dava 4+2 e sobrava meia fileira. */
-.princ-g{display:grid;grid-template-columns:repeat(3,1fr);margin-top:38px;border-top:1px solid rgba(255,255,255,.16);border-left:1px solid rgba(255,255,255,.16)}
-.princ{padding:28px 26px;border-right:1px solid rgba(255,255,255,.16);border-bottom:1px solid rgba(255,255,255,.16);transition:background .25s}
+/* 4 blocos em 2 colunas = 2 fileiras cheias, sem meia fileira sobrando. */
+.princ-g{display:grid;grid-template-columns:repeat(2,1fr);margin-top:38px;border-top:1px solid rgba(255,255,255,.16);border-left:1px solid rgba(255,255,255,.16)}
+.princ{padding:30px 30px 32px;border-right:1px solid rgba(255,255,255,.16);border-bottom:1px solid rgba(255,255,255,.16);transition:background .25s}
 .princ:hover{background:rgba(255,255,255,.045)}
 .princ .num{font-family:var(--serif);font-size:.82rem;color:var(--dourado-claro);letter-spacing:.06em}
-.princ h3{font-size:1.16rem;margin:8px 0 7px}
-.princ p{font-size:.89rem;color:#B9C7DA;line-height:1.6}
+.princ h3{font-size:1.16rem;margin:8px 0 4px}
+.princ .ex{display:block;font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:var(--dourado-claro);font-weight:600;margin-bottom:16px}
+.princ ul{list-style:none;display:grid;gap:9px}
+.princ li{font-size:.9rem;color:#B9C7DA;line-height:1.55;padding-left:16px;position:relative}
+.princ li::before{content:"";position:absolute;left:0;top:.62em;width:7px;height:1px;background:var(--dourado-claro)}
+.princ-frase{margin-top:clamp(38px,5vw,54px);font-family:var(--serif);font-size:clamp(1.1rem,2vw,1.35rem);line-height:1.45;font-weight:300;color:#fff;max-width:44ch;border-left:2px solid var(--dourado-claro);padding:6px 0 6px 24px}
 
 /* .cards = 6 itens (jornada) em 3 colunas; .cards.c4 = 4 itens (pagamento) em 4. */
 .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:48px;counter-reset:j}
@@ -469,7 +473,7 @@ footer a:hover{color:#fff;text-decoration:underline}
         <h3>Clínica Geral</h3><p>Consultas, restaurações e o acompanhamento de rotina que evita o problema grande lá na frente.</p><span class="seta"><svg class="ico-zap" aria-hidden="true"><use href="#i-wa"/></svg>Falar no WhatsApp</span>
       </a>
       <a class="trat" href="https://wa.me/5527992031738?text=Quero%20agendar%20uma%20limpeza." target="_blank" rel="noopener">
-        <h3>Procedimentos Preventivos</h3><p>Limpeza, flúor e orientação — o tratamento mais barato é o que você não precisa fazer.</p><span class="seta"><svg class="ico-zap" aria-hidden="true"><use href="#i-wa"/></svg>Falar no WhatsApp</span>
+        <h3>Prevenção e manutenção</h3><p>Nos preocupamos em acompanhar a sua saúde bucal e os tratamentos realizados. Manter a sua saúde bucal em dia é a nossa prioridade.</p><span class="seta"><svg class="ico-zap" aria-hidden="true"><use href="#i-wa"/></svg>Falar no WhatsApp</span>
       </a>
     </div>
   </div>
@@ -616,17 +620,28 @@ footer a:hover{color:#fff;text-decoration:underline}
       </div>
     </div>
     <div class="princ-cab rv">
-      <h3>Seis princípios que sustentam a clínica.</h3>
-      <p>Não são frases de parede — são o combinado que a equipe assume todos os dias, com cada paciente que senta na cadeira.</p>
+      <h3>O nosso jeito de ser.</h3>
+      <p>Não são frases de parede — é o combinado que a equipe assume todos os dias, com cada paciente que senta na cadeira.</p>
     </div>
     <div class="princ-g rv">
-      <div class="princ"><span class="num">01</span><h3>Cura</h3><p>Tratamento que resolve o problema pela raiz, não remenda. Se a causa não for tratada, o problema volta.</p></div>
-      <div class="princ"><span class="num">02</span><h3>Excelência</h3><p>Cada etapa é feita por quem é especialista naquilo. Nada de um profissional só fazendo tudo mais ou menos.</p></div>
-      <div class="princ"><span class="num">03</span><h3>Prevenção</h3><p>Terminado o tratamento, começa a manutenção. Sorriso reabilitado precisa de acompanhamento para durar.</p></div>
-      <div class="princ"><span class="num">04</span><h3>Empatia</h3><p>Entender o medo e a história de quem senta na cadeira — e respeitar o ritmo de cada um.</p></div>
-      <div class="princ"><span class="num">05</span><h3>Compromisso</h3><p>O que a gente promete, a gente cumpre: prazo, etapa e resultado combinados por escrito.</p></div>
-      <div class="princ"><span class="num">06</span><h3>Unidade</h3><p>O resultado de um tratamento é o resultado de um time inteiro, da recepção à cadeira.</p></div>
+      <div class="princ">
+        <span class="num">01</span><h3>Como pensamos</h3><span class="ex">Verdadeiros</span>
+        <ul><li>Agimos com honestidade.</li><li>Falamos a verdade.</li><li>Assumimos nossos erros e aprendemos com eles.</li></ul>
+      </div>
+      <div class="princ">
+        <span class="num">02</span><h3>Como agimos</h3><span class="ex">Transparência e sinceridade</span>
+        <ul><li>Comunicação clara.</li><li>Relações baseadas na confiança.</li><li>Alinhamento entre o que falamos e o que fazemos.</li></ul>
+      </div>
+      <div class="princ">
+        <span class="num">03</span><h3>Características marcantes</h3><span class="ex">Ajudar ao próximo</span>
+        <ul><li>Espírito de servir.</li><li>Disposição para colaborar.</li><li>Cuidado genuíno com pacientes e equipe.</li></ul>
+      </div>
+      <div class="princ">
+        <span class="num">04</span><h3>Estilo de vida</h3><span class="ex">Cristã</span>
+        <ul><li>Amor ao próximo.</li><li>Respeito às pessoas.</li><li>Integridade nas ações.</li><li>Excelência como forma de honrar a Deus.</li></ul>
+      </div>
     </div>
+    <p class="princ-frase rv">&ldquo;A cultura não é o que está escrito na parede. É o que praticamos todos os dias.&rdquo;</p>
   </div>
 </section>
 
