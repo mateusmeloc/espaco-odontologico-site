@@ -351,8 +351,9 @@ footer a:hover{color:#fff;text-decoration:underline}
 .zap-flut:hover{transform:scale(1.06)}
 .zap-flut .ico{width:30px;height:30px;flex-basis:30px;fill:#fff}
 
-/* Todas as fotos ainda são hotlink de terceiros (Wix/Google/GreatPages).
-   Se alguma sair do ar, vira este quadro em vez de ícone de imagem quebrada. */
+/* Rede de segurança de imagem: se alguma foto falhar ao carregar, vira este
+   quadro em vez de ícone de imagem quebrada. (Hoje todas as fotos são servidas
+   do próprio site — o último hotlink, o retrato do Wix, foi internalizado.) */
 /* width:100% é obrigatório: com aspect-ratio + min-height o navegador
    recalcula a largura a partir da altura e o quadro estoura o container. */
 .img-falta{width:100%;min-height:90px;display:grid;place-items:center;align-content:center;text-align:center;background:var(--creme-2);border:1px dashed var(--dourado);border-radius:var(--r-md);padding:18px;overflow:hidden}
@@ -473,7 +474,7 @@ footer a:hover{color:#fff;text-decoration:underline}
       <p class="hero-nota"><b>Seg a Sex 8h–18h</b> · <b>Sáb 8h–12h</b> &nbsp;·&nbsp; R. dos Cravos, 39 — Feu Rosa, Serra/ES &nbsp;·&nbsp; Pix, cartão e parcelamento próprio</p>
     </div>
     <div class="foto-destaque">
-      <img src="assets/fotos/dra-hosana-recepcao.webp" srcset="assets/fotos/dra-hosana-recepcao.webp 675w, assets/fotos/dra-hosana-recepcao@2x.webp 1200w" sizes="(max-width:940px) 92vw, 46vw" width="675" height="900" fetchpriority="high" decoding="async" alt="Dra. Hosana Melo, implantodontista e responsável técnica, na recepção do Espaço Odontológico em Feu Rosa, Serra/ES">
+      <img src="assets/fotos/dra-hosana-retrato.webp" srcset="assets/fotos/dra-hosana-retrato.webp 889w, assets/fotos/dra-hosana-retrato@2x.webp 1581w" sizes="(max-width:940px) 92vw, 46vw" width="889" height="900" fetchpriority="high" decoding="async" alt="Dra. Hosana Melo, implantodontista e responsável técnica do Espaço Odontológico em Feu Rosa, Serra/ES">
       <span class="selo-nome"><b>Dra. Hosana Melo</b> · CRO-ES 5226</span>
       <a class="selo-foto" href="https://www.google.com/maps/place/Espa%C3%A7o+Odontol%C3%B3gico/@-20.1741671,-40.2072274,17z" target="_blank" rel="noopener">
         <span class="nota">5,0</span>
@@ -695,7 +696,7 @@ footer a:hover{color:#fff;text-decoration:underline}
   <div class="wrap">
     <div class="hist-g">
       <div class="hist-foto rv">
-        <img src="https://static.wixstatic.com/media/65ce51_ccc910de7e2647a7bb14ff0a0d4d4153~mv2.jpg/v1/crop/x_1632,y_391,w_2563,h_2594/fill/w_800,h_800,al_c,q_85,enc_auto/CLA_5265%202_JPG.jpg" width="800" height="976" alt="Dra. Hosana A. S. Melo, CRO-ES 5226, implantodontista e responsável técnica do Espaço Odontológico em Feu Rosa, Serra/ES" loading="lazy" decoding="async">
+        <img src="assets/fotos/dra-hosana-recepcao.webp" srcset="assets/fotos/dra-hosana-recepcao.webp 675w, assets/fotos/dra-hosana-recepcao@2x.webp 1200w" sizes="(max-width:940px) 92vw, 34vw" width="675" height="900" alt="Dra. Hosana A. S. Melo, CRO-ES 5226, na recepção do Espaço Odontológico em Feu Rosa, Serra/ES" loading="lazy" decoding="async">
         <div class="hist-cred"><b>Dra. Hosana A. S. Melo</b><span>CRO-ES 5226 · Responsável técnica</span></div>
       </div>
       <div class="rv">
