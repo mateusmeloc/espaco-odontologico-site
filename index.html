@@ -144,7 +144,24 @@ header{position:sticky;top:0;z-index:60;background:rgba(250,247,242,.93);backdro
 .hero-g{display:grid;grid-template-columns:1.02fr .98fr;gap:clamp(34px,6vw,78px);align-items:center}
 h1{font-size:clamp(2.3rem,5.6vw,4rem);font-weight:300}
 h1 b{font-weight:500;color:var(--slate)}
-.hero p.lead{margin:26px 0 34px;font-size:1.11rem}
+.hero p.lead{margin:22px 0 30px;font-size:1.08rem;max-width:52ch}
+/* Sobrancelha que nomeia o que a clínica faz antes de qualquer slogan. */
+.hero-foco{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:var(--dourado-txt);font-weight:600;margin-bottom:20px}
+.hero-foco i{font-style:normal;width:4px;height:4px;border-radius:50%;background:var(--dourado);flex:0 0 4px}
+
+/* Os três focos comerciais, logo abaixo do hero: é o que o visitante
+   precisa entender antes de qualquer outra coisa. */
+.focos{background:var(--creme-2);border-top:1px solid var(--borda);border-bottom:1px solid var(--borda);padding:0}
+.focos-g{display:grid;grid-template-columns:repeat(3,1fr)}
+.foco{display:flex;flex-direction:column;gap:12px;padding:clamp(30px,3.4vw,44px) clamp(24px,2.6vw,36px);text-decoration:none;border-right:1px solid var(--borda);background:transparent;transition:background .3s ease,transform .3s ease;position:relative}
+.foco:last-child{border-right:0}
+.foco:hover{background:#fff}
+.foco .rot{font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--dourado-txt);font-weight:600}
+.foco h2{font-size:clamp(1.4rem,2.4vw,1.85rem);line-height:1.12}
+.foco p{font-size:.92rem;color:var(--texto-2);line-height:1.6;flex:1}
+.foco .ir{display:inline-flex;align-items:center;gap:8px;font-size:.8rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--navy)}
+.foco .ir .ico-zap{width:15px;height:15px;flex:0 0 15px;fill:var(--whats);transition:transform .3s ease}
+.foco:hover .ir .ico-zap{transform:scale(1.15)}
 .hero-ctas{display:flex;flex-wrap:wrap;gap:14px}
 .hero-nota{margin-top:26px;font-size:.85rem;color:var(--texto-2)}
 .hero-nota b{color:var(--navy);font-weight:500}
@@ -190,6 +207,17 @@ h1 b{font-weight:500;color:var(--slate)}
 .trat:hover{background:var(--creme)}
 .trat h3{font-size:1.22rem}
 .trat p{font-size:.91rem;color:var(--texto-2);flex:1;line-height:1.65}
+/* 4 tratamentos à mostra e 8 atrás de um toque. <details> nativo: sem JS,
+   e os 12 continuam no HTML, então o Google lê todos igual. */
+.mais-trat{margin-top:-1px}
+.mais-trat summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;padding:20px;font-size:.82rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--navy);border:1px solid var(--borda);border-top:0;background:var(--creme);transition:background .25s ease}
+.mais-trat summary::-webkit-details-marker{display:none}
+.mais-trat summary:hover{background:var(--creme-2)}
+.mais-trat summary::after{content:"";width:7px;height:7px;border-right:1.5px solid var(--dourado-txt);border-bottom:1.5px solid var(--dourado-txt);transform:rotate(45deg) translateY(-2px);transition:transform .3s ease}
+.mais-trat[open] summary::after{transform:rotate(-135deg) translateY(-2px)}
+.mais-trat .fechar,.mais-trat[open] .abrir{display:none}
+.mais-trat[open] .fechar{display:inline}
+.grid-trat-mais{margin-top:0;border-top:0}
 .seta{font-size:.78rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--dourado-txt);display:inline-flex;gap:7px;align-items:center}
 .seta .ico-zap{width:15px;height:15px;flex:0 0 15px;fill:var(--whats);transition:transform .25s}
 .trat:hover .seta .ico-zap{transform:scale(1.14)}
@@ -321,13 +349,31 @@ footer a:hover{color:#fff;text-decoration:underline}
 .img-falta{width:100%;min-height:90px;display:grid;place-items:center;align-content:center;text-align:center;background:var(--creme-2);border:1px dashed var(--dourado);border-radius:var(--r-md);padding:18px;overflow:hidden}
 .img-falta b{font-family:var(--serif);color:var(--navy);font-size:.98rem;font-weight:500}
 
-/* O conteúdo só é escondido depois que o observer está de fato ligado (.rv-ready).
-   Se o JS falhar, for bloqueado ou o IntersectionObserver não disparar, nada some. */
-.rv-ready .rv{opacity:0;transform:translateY(14px);transition:opacity .55s ease,transform .55s cubic-bezier(.22,.61,.36,1)}
+/* Caminho de fallback: o JS esconde só depois de o mecanismo estar ligado.
+   Se o JS falhar ou for bloqueado, nada some. */
+.rv-ready .rv{opacity:0;transform:translateY(16px);transition:opacity .7s ease,transform .7s cubic-bezier(.16,.84,.44,1)}
 .rv-ready .rv.on{opacity:1;transform:none}
+
+/* Caminho preferido: animação ligada à rolagem, calculada pelo compositor.
+   Entra conforme o elemento sobe na tela em vez de aparecer de uma vez — é o
+   que dá a sensação de contínuo. O JS acima se desliga sozinho quando isto
+   está disponível, para os dois não brigarem. */
+@supports (animation-timeline: view()){
+  @media (prefers-reduced-motion: no-preference){
+    .rv{animation:entra linear both;animation-timeline:view();animation-range:entry 4% cover 24%}
+    /* Parallax discreto só nas fotos da galeria: o hero fica parado para não
+       atrapalhar quem abre o site já querendo o botão do WhatsApp. */
+    .galeria img{animation:flutua linear both;animation-timeline:view();animation-range:cover 0% cover 100%;will-change:transform}
+  }
+}
+@keyframes entra{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes flutua{from{transform:translateY(10px) scale(1.05)}to{transform:translateY(-10px) scale(1.05)}}
 
 @media(max-width:1040px){
   .princ-g,.cards,.cards.c4{grid-template-columns:repeat(2,1fr)}
+  .focos-g{grid-template-columns:1fr}
+  .foco{border-right:0;border-bottom:1px solid var(--borda)}
+  .foco:last-child{border-bottom:0}
   .galeria{grid-template-columns:repeat(2,1fr)}
   .tecno{grid-template-columns:1fr}
 }
@@ -405,8 +451,9 @@ footer a:hover{color:#fff;text-decoration:underline}
 <section class="hero" id="topo">
   <div class="wrap hero-g">
     <div>
-      <h1>Onde sua saúde e seu <b>sorriso</b> são prioridades.</h1>
-      <p class="lead">Desde 2006 em Feu Rosa — vinte anos cuidando dos sorrisos do bairro. Oito cirurgiãs-dentistas, cada uma na sua especialidade, doze áreas de tratamento e um único plano conduzido do diagnóstico à manutenção, sem que você precise sair da clínica.</p>
+      <p class="hero-foco">Implantes <i aria-hidden="true"></i> Prótese <i aria-hidden="true"></i> Invisalign</p>
+      <h1>Voltar a mastigar, falar e <b>sorrir</b> sem pensar duas vezes.</h1>
+      <p class="lead">Reabilitação oral completa em Feu Rosa, com implante, prótese e alinhador transparente feitos na mesma clínica — do diagnóstico à manutenção, sem você precisar sair daqui.</p>
       <div class="hero-ctas">
         <a class="btn btn-zap" href="https://wa.me/5527992031738?text=Ol%C3%A1%21%20Quero%20agendar%20uma%20avalia%C3%A7%C3%A3o%20no%20Espa%C3%A7o%20Odontol%C3%B3gico." target="_blank" rel="noopener"><svg class="ico" aria-hidden="true"><use href="#i-wa"/></svg>Agendar minha avaliação</a>
         <a class="btn btn-out" href="#tratamentos">Ver tratamentos</a>
@@ -424,6 +471,29 @@ footer a:hover{color:#fff;text-decoration:underline}
   </div>
 </section>
 
+<section class="focos" aria-label="Principais tratamentos">
+  <div class="wrap"><div class="focos-g">
+      <a class="foco rv" href="https://wa.me/5527992031738?text=Ol%C3%A1%21%20Quero%20saber%20sobre%20implantes." target="_blank" rel="noopener">
+        <span class="rot">Reabilitação</span>
+        <h2>Implantes</h2>
+        <p>Um dente ou a boca inteira. Implante de titânio com prótese provisória em todas as etapas — você não fica sem dente em nenhum momento.</p>
+        <span class="ir"><svg class="ico-zap" aria-hidden="true"><use href="#i-wa"/></svg>Falar sobre implantes</span>
+      </a>
+      <a class="foco rv" href="https://wa.me/5527992031738?text=Ol%C3%A1%21%20Quero%20saber%20sobre%20pr%C3%B3tese." target="_blank" rel="noopener">
+        <span class="rot">Reposição</span>
+        <h2>Prótese</h2>
+        <p>Fixa, removível ou protocolo sobre implante, planejada para mastigar com firmeza e parecer natural de perto.</p>
+        <span class="ir"><svg class="ico-zap" aria-hidden="true"><use href="#i-wa"/></svg>Falar sobre prótese</span>
+      </a>
+      <a class="foco rv" href="https://wa.me/5527992031738?text=Ol%C3%A1%21%20Quero%20saber%20sobre%20Invisalign." target="_blank" rel="noopener">
+        <span class="rot">Ortodontia</span>
+        <h2>Invisalign</h2>
+        <p>Alinhador transparente, removível na hora de comer e escovar. Somos clínica parceira oficial, com escaneamento 3D no lugar da massa de moldagem.</p>
+        <span class="ir"><svg class="ico-zap" aria-hidden="true"><use href="#i-wa"/></svg>Falar sobre invisalign</span>
+      </a>
+  </div></div>
+</section>
+
 <div class="stats"><div class="wrap"><div class="stats-g">
   <div class="stat"><div class="n">5,0 <span class="estrelas" aria-hidden="true">&#9733;</span></div><div class="t">178 avaliações no Google</div><div class="d">Nota máxima, sem exceção</div></div>
   <div class="stat"><div class="n">20</div><div class="t">anos de história</div><div class="d">Desde 2006, sob a mesma liderança</div></div>
@@ -439,6 +509,22 @@ footer a:hover{color:#fff;text-decoration:underline}
       <p class="lead mt">Escolha o que você precisa e fale direto com a gente no WhatsApp — sem formulário, sem espera.</p>
     </div>
     <div class="grid-trat rv">
+      <a class="trat" href="https://wa.me/5527992031738?text=Quero%20saber%20sobre%20Est%C3%A9tica%20Dental." target="_blank" rel="noopener">
+        <h3>Estética</h3><p>Clareamento, facetas e restaurações estéticas para um sorriso harmônico e do seu jeito.</p><span class="seta"><svg class="ico-zap" aria-hidden="true"><use href="#i-wa"/></svg>Falar no WhatsApp</span>
+      </a>
+      <a class="trat" href="https://wa.me/5527992031738?text=Quero%20saber%20sobre%20Endodontia%20%28canal%29." target="_blank" rel="noopener">
+        <h3>Endodontia</h3><p>Tratamento de canal com especialista, preservando o dente e eliminando a dor.</p><span class="seta"><svg class="ico-zap" aria-hidden="true"><use href="#i-wa"/></svg>Falar no WhatsApp</span>
+      </a>
+      <a class="trat" href="https://wa.me/5527992031738?text=Quero%20saber%20sobre%20Cirurgia%20Oral." target="_blank" rel="noopener">
+        <h3>Cirurgia</h3><p>Extrações, sisos e cirurgias pré-protéticas conduzidas por cirurgiã com pós-graduação na área.</p><span class="seta"><svg class="ico-zap" aria-hidden="true"><use href="#i-wa"/></svg>Falar no WhatsApp</span>
+      </a>
+      <a class="trat" href="https://wa.me/5527992031738?text=Quero%20agendar%20uma%20limpeza." target="_blank" rel="noopener">
+        <h3>Prevenção e manutenção</h3><p>Nos preocupamos em acompanhar a sua saúde bucal e os tratamentos realizados. Manter a sua saúde bucal em dia é a nossa prioridade.</p><span class="seta"><svg class="ico-zap" aria-hidden="true"><use href="#i-wa"/></svg>Falar no WhatsApp</span>
+      </a>
+    </div>
+    <details class="mais-trat rv">
+      <summary><span class="abrir">Ver as outras 8 especialidades</span><span class="fechar">Ver menos</span></summary>
+      <div class="grid-trat grid-trat-mais">
       <a class="trat" href="https://wa.me/5527992031738?text=Quero%20saber%20sobre%20Implantes%20Dent%C3%A1rios." target="_blank" rel="noopener">
         <h3>Implantodontia</h3><p>Reposição de um ou mais dentes com implantes de titânio. Volte a mastigar, falar e sorrir com segurança.</p><span class="seta"><svg class="ico-zap" aria-hidden="true"><use href="#i-wa"/></svg>Falar no WhatsApp</span>
       </a>
@@ -448,20 +534,11 @@ footer a:hover{color:#fff;text-decoration:underline}
       <a class="trat" href="https://wa.me/5527992031738?text=Quero%20saber%20sobre%20Ortodontia%20%28aparelho%29." target="_blank" rel="noopener">
         <h3>Ortodontia</h3><p>Aparelhos fixos e alinhadores para corrigir o posicionamento dos dentes e da mordida, em qualquer idade.</p><span class="seta"><svg class="ico-zap" aria-hidden="true"><use href="#i-wa"/></svg>Falar no WhatsApp</span>
       </a>
-      <a class="trat" href="https://wa.me/5527992031738?text=Quero%20saber%20sobre%20Est%C3%A9tica%20Dental." target="_blank" rel="noopener">
-        <h3>Estética</h3><p>Clareamento, facetas e restaurações estéticas para um sorriso harmônico e do seu jeito.</p><span class="seta"><svg class="ico-zap" aria-hidden="true"><use href="#i-wa"/></svg>Falar no WhatsApp</span>
-      </a>
       <a class="trat" href="https://wa.me/5527992031738?text=Quero%20saber%20sobre%20Harmoniza%C3%A7%C3%A3o%20Orofacial." target="_blank" rel="noopener">
         <h3>Harmonização Orofacial</h3><p>Procedimentos faciais conduzidos por especialista titulada, com foco em equilíbrio e naturalidade.</p><span class="seta"><svg class="ico-zap" aria-hidden="true"><use href="#i-wa"/></svg>Falar no WhatsApp</span>
       </a>
-      <a class="trat" href="https://wa.me/5527992031738?text=Quero%20saber%20sobre%20Endodontia%20%28canal%29." target="_blank" rel="noopener">
-        <h3>Endodontia</h3><p>Tratamento de canal com especialista, preservando o dente e eliminando a dor.</p><span class="seta"><svg class="ico-zap" aria-hidden="true"><use href="#i-wa"/></svg>Falar no WhatsApp</span>
-      </a>
       <a class="trat" href="https://wa.me/5527992031738?text=Quero%20saber%20sobre%20Periodontia%20%28gengiva%29." target="_blank" rel="noopener">
         <h3>Periodontia</h3><p>Cuidado da gengiva e do osso que sustentam seus dentes — a base de qualquer tratamento duradouro.</p><span class="seta"><svg class="ico-zap" aria-hidden="true"><use href="#i-wa"/></svg>Falar no WhatsApp</span>
-      </a>
-      <a class="trat" href="https://wa.me/5527992031738?text=Quero%20saber%20sobre%20Cirurgia%20Oral." target="_blank" rel="noopener">
-        <h3>Cirurgia</h3><p>Extrações, sisos e cirurgias pré-protéticas conduzidas por cirurgiã com pós-graduação na área.</p><span class="seta"><svg class="ico-zap" aria-hidden="true"><use href="#i-wa"/></svg>Falar no WhatsApp</span>
       </a>
       <a class="trat" href="https://wa.me/5527992031738?text=Quero%20saber%20sobre%20Laserterapia." target="_blank" rel="noopener">
         <h3>Laserterapia</h3><p>Recuperação mais rápida, menos dor e menos inchaço no pós-operatório com laser de baixa potência.</p><span class="seta"><svg class="ico-zap" aria-hidden="true"><use href="#i-wa"/></svg>Falar no WhatsApp</span>
@@ -472,10 +549,8 @@ footer a:hover{color:#fff;text-decoration:underline}
       <a class="trat" href="https://wa.me/5527992031738?text=Quero%20saber%20sobre%20Cl%C3%ADnica%20Geral." target="_blank" rel="noopener">
         <h3>Clínica Geral</h3><p>Consultas, restaurações e o acompanhamento de rotina que evita o problema grande lá na frente.</p><span class="seta"><svg class="ico-zap" aria-hidden="true"><use href="#i-wa"/></svg>Falar no WhatsApp</span>
       </a>
-      <a class="trat" href="https://wa.me/5527992031738?text=Quero%20agendar%20uma%20limpeza." target="_blank" rel="noopener">
-        <h3>Prevenção e manutenção</h3><p>Nos preocupamos em acompanhar a sua saúde bucal e os tratamentos realizados. Manter a sua saúde bucal em dia é a nossa prioridade.</p><span class="seta"><svg class="ico-zap" aria-hidden="true"><use href="#i-wa"/></svg>Falar no WhatsApp</span>
-      </a>
-    </div>
+      </div>
+    </details>
   </div>
 </section>
 
@@ -789,6 +864,8 @@ footer a:hover{color:#fff;text-decoration:underline}
   var reduz=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   // Sem suporte a rAF, com movimento reduzido ou sem alvos: não esconde nada e sai.
   if(reduz||!alvos.length||!window.requestAnimationFrame)return;
+  // Onde o navegador anima ligado à rolagem, o CSS resolve melhor e sozinho.
+  if(window.CSS&&CSS.supports&&CSS.supports('animation-timeline','view()'))return;
 
   // Varredura por posição, não IntersectionObserver: um salto grande de rolagem
   // (âncora, tecla End, posição restaurada) pode passar do elemento entre dois
