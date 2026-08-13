@@ -38,7 +38,7 @@ document.addEventListener('error',function(e){
   d.appendChild(b);d.appendChild(s);
   var pai=img.parentElement;
   img.replaceWith(d);
-  if(pai&&pai.classList.contains('ad'))pai.style.background='transparent';
+  if(pai&&pai.classList.contains('caso'))pai.style.background='transparent';
 },true);
 </script>
 
@@ -112,14 +112,13 @@ section{padding:clamp(64px,9vw,120px) 0}
 .mv :focus-visible,.cta-final :focus-visible,footer :focus-visible,.btn-zap:focus-visible{outline-color:var(--dourado-claro)}
 .ico{width:19px;height:19px;fill:currentColor;flex:0 0 19px}
 
-.aviso{background:var(--navy-900);color:#C3CFDF;font-size:.76rem;text-align:center;padding:9px 16px}
-.aviso b{color:var(--dourado-claro);font-weight:500}
-
 header{position:sticky;top:0;z-index:60;background:rgba(250,247,242,.93);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--borda)}
 .nav{display:flex;align-items:center;justify-content:space-between;gap:22px;height:var(--header-h)}
 .logo{display:block;width:170px;height:43px;background:var(--logo) left center/contain no-repeat}
-.menu{display:flex;gap:30px;list-style:none}
-.menu a{text-decoration:none;font-size:.9rem;color:var(--texto);padding:5px 0;border-bottom:1px solid transparent;transition:color .2s,border-color .2s}
+.menu{display:flex;gap:26px;list-style:none}
+/* nowrap: com 7 itens o menu fecha por poucos px e o rótulo de duas palavras
+   quebrava no meio; abaixo disso os breakpoints tiram tel e viram burger. */
+.menu a{text-decoration:none;font-size:.9rem;color:var(--texto);padding:5px 0;border-bottom:1px solid transparent;transition:color .2s,border-color .2s;white-space:nowrap}
 .menu a:hover{color:var(--navy);border-color:var(--dourado)}
 .nav-r{display:flex;align-items:center;gap:16px}
 .tel{display:flex;align-items:center;gap:8px;font-size:.88rem;text-decoration:none;color:var(--texto-2);white-space:nowrap}
@@ -175,9 +174,11 @@ h1 b{font-weight:500;color:var(--slate)}
 .selo-foto .txt{display:grid;gap:3px}
 .selo-foto .estrelas{font-size:.84rem;letter-spacing:1.5px;line-height:1}
 .selo-foto small{font-size:.75rem;color:var(--texto-2);line-height:1.2}
-/* 16:9 é a proporção nativa da foto: qualquer box mais alto corta as
-   laterais e come o nome da clínica na parede. */
-.foto-destaque img{position:relative;z-index:1;border-radius:var(--r-md);aspect-ratio:16/9;object-fit:cover;box-shadow:var(--sombra-lg)}
+/* Retrato 4:5 sobre a foto 3:4 nativa: corte vertical mínimo, com o
+   enquadramento puxado para cima para o rosto nunca sair do quadro. */
+.foto-destaque img{position:relative;z-index:1;border-radius:var(--r-md);aspect-ratio:4/5;object-fit:cover;object-position:center 20%;box-shadow:var(--sombra-lg)}
+.selo-nome{position:absolute;top:18px;left:18px;z-index:2;background:rgba(255,255,255,.94);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-radius:var(--r-pill);padding:8px 17px;font-size:.79rem;color:var(--navy);box-shadow:0 6px 18px rgba(22,34,58,.16);white-space:nowrap}
+.selo-nome b{font-weight:600}
 .foto-destaque::after{content:"";position:absolute;left:-26px;bottom:-26px;width:150px;height:150px;border:1px solid var(--dourado);border-radius:var(--r-md);z-index:0}
 .foto-bloco img{border-radius:var(--r-md);object-fit:cover;box-shadow:var(--sombra-lg);filter:brightness(1.07) contrast(1.04) saturate(1.03)}
 
@@ -238,13 +239,21 @@ h1 b{font-weight:500;color:var(--slate)}
 .dep b{font-size:.88rem;font-weight:500;display:block}
 .dep small{font-size:.75rem;color:var(--texto-2)}
 
-.ad-wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(30px,5vw,60px);align-items:center}
-.ad-g{max-width:430px}
-.ad{margin:0}
-.ad img{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:var(--r-md);box-shadow:var(--sombra-md);filter:brightness(1.04) contrast(1.02)}
-.ad figcaption{margin-top:12px;font-size:.82rem;color:var(--texto-2);line-height:1.45}
-.ad-side{display:grid;gap:18px;align-content:center}
-.nota-etica{margin-top:8px;font-size:.81rem;color:var(--texto-2);border-left:2px solid var(--dourado);padding:6px 0 6px 18px}
+/* Carrossel de casos: rolagem nativa com scroll-snap — funciona sem nenhum JS.
+   As setas são só atalho de desktop e ficam escondidas até o script ligar.
+   As imagens têm proporções diferentes (composições de antes/depois): altura
+   fixa e largura natural, sem object-fit:cover, para nunca cortar o "antes". */
+.casos{margin-top:46px;position:relative}
+.casos-trilho{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 4px 18px;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:var(--dourado) transparent}
+.caso{margin:0;flex:0 0 auto;scroll-snap-align:start}
+.caso img{height:clamp(340px,42vw,470px);width:auto;border-radius:var(--r-md);box-shadow:var(--sombra-md);background:var(--creme-2)}
+.caso figcaption{margin-top:10px;font-size:.82rem;color:var(--texto-2);line-height:1.45;max-width:40ch}
+.casos-nav{position:absolute;top:-72px;right:4px;display:flex;gap:10px}
+.casos-nav[hidden]{display:none}
+.casos-btn{width:46px;height:46px;border-radius:50%;border:1px solid var(--borda);background:#fff;color:var(--navy);font-size:1.5rem;line-height:1;cursor:pointer;box-shadow:var(--sombra-sm);transition:background .2s,transform .2s;display:grid;place-items:center;padding-bottom:4px}
+.casos-btn:hover{background:var(--creme);transform:translateY(-2px)}
+.casos-rodape{margin-top:26px;display:flex;flex-wrap:wrap;gap:22px;align-items:center}
+.nota-etica{margin-top:8px;font-size:.81rem;color:var(--texto-2);border-left:2px solid var(--dourado);padding:6px 0 6px 18px;max-width:64ch}
 
 .hist-g{display:grid;grid-template-columns:.85fr 1.15fr;gap:clamp(36px,6vw,80px);align-items:center}
 .hist-foto{position:relative;z-index:0}
@@ -369,6 +378,15 @@ footer a:hover{color:#fff;text-decoration:underline}
 @keyframes entra{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
 @keyframes flutua{from{transform:translateY(10px) scale(1.05)}to{transform:translateY(-10px) scale(1.05)}}
 
+@media(max-width:1240px){
+  .tel{display:none}
+}
+@media(max-width:1100px){
+  .burger{display:block}
+  .menu{display:none;position:absolute;top:100%;left:0;right:0;background:var(--creme);flex-direction:column;gap:2px;padding:14px 24px 22px;border-bottom:1px solid var(--borda);box-shadow:var(--sombra-md)}
+  .menu.aberto{display:flex}
+  .menu a{padding:12px 0;font-size:1rem;display:block}
+}
 @media(max-width:1040px){
   .princ-g,.cards,.cards.c4{grid-template-columns:repeat(2,1fr)}
   .focos-g{grid-template-columns:1fr}
@@ -378,7 +396,8 @@ footer a:hover{color:#fff;text-decoration:underline}
   .tecno{grid-template-columns:1fr}
 }
 @media(max-width:940px){
-  .hero-g,.int-g,.local-g,.ad-wrap,.mv-g,.hist-g{grid-template-columns:1fr}
+  .hero-g,.int-g,.local-g,.mv-g,.hist-g{grid-template-columns:1fr}
+  .casos-nav{display:none}
   /* No celular a foto vinha depois de todo o texto e a primeira tela ficava só
      com letra. Sobe para o topo, com a nota do Google sobre ela. */
   .hero-g .foto-destaque{order:-1;margin-bottom:6px}
@@ -389,11 +408,6 @@ footer a:hover{color:#fff;text-decoration:underline}
   .stat{border-bottom:1px solid var(--borda)}
   .stat:nth-child(2n){border-right:0}
   .f-g{grid-template-columns:1fr 1fr}
-  .tel{display:none}
-  .burger{display:block}
-  .menu{display:none;position:absolute;top:100%;left:0;right:0;background:var(--creme);flex-direction:column;gap:2px;padding:14px 24px 22px;border-bottom:1px solid var(--borda);box-shadow:var(--sombra-md)}
-  .menu.aberto{display:flex}
-  .menu a{padding:12px 0;font-size:1rem;display:block}
   .tl-item{grid-template-columns:1fr;gap:6px}
   .hist-cred{position:static;margin-top:16px}
   .hist-foto::after,.foto-destaque::after{display:none}
@@ -410,7 +424,6 @@ footer a:hover{color:#fff;text-decoration:underline}
   .logo{width:132px;height:34px}
   .nav{gap:12px}
   .nav .btn{padding:12px 17px;font-size:.86rem;white-space:nowrap;min-height:44px}
-  .aviso{font-size:.72rem;padding:8px 14px}
   .google-box,.equipe-nota,.pg-nota{padding:24px 22px}
   .trat{padding:28px 24px}
 }
@@ -425,13 +438,12 @@ footer a:hover{color:#fff;text-decoration:underline}
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><symbol id="i-wa" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></symbol></svg>
 
-<div class="aviso">Prévia para aprovação — <b>fotos, avaliações e dados são reais da clínica</b>. As fotos entram em alta na versão final.</div>
-
 <header>
   <div class="wrap nav">
     <a class="logo" href="#topo" aria-label="Espaço Odontológico — Dra. Hosana Melo, ir para o topo"></a>
     <nav aria-label="Menu principal"><ul class="menu" id="menu-principal">
       <li><a href="#tratamentos">Tratamentos</a></li>
+      <li><a href="#resultados">Resultados</a></li>
       <li><a href="#avaliacoes">Avaliações</a></li>
       <li><a href="#estrutura">A clínica</a></li>
       <li><a href="#principios">Princípios</a></li>
@@ -461,7 +473,8 @@ footer a:hover{color:#fff;text-decoration:underline}
       <p class="hero-nota"><b>Seg a Sex 8h–18h</b> · <b>Sáb 8h–12h</b> &nbsp;·&nbsp; R. dos Cravos, 39 — Feu Rosa, Serra/ES &nbsp;·&nbsp; Pix, cartão e parcelamento próprio</p>
     </div>
     <div class="foto-destaque">
-      <img src="assets/fotos/recepcao.webp" srcset="assets/fotos/recepcao.webp 893w" sizes="(max-width:940px) 92vw, 46vw" width="893" height="502" fetchpriority="high" decoding="async" alt="Recepção do Espaço Odontológico em Feu Rosa, Serra/ES, com o nome da clínica na parede">
+      <img src="assets/fotos/dra-hosana-recepcao.webp" srcset="assets/fotos/dra-hosana-recepcao.webp 675w, assets/fotos/dra-hosana-recepcao@2x.webp 1200w" sizes="(max-width:940px) 92vw, 46vw" width="675" height="900" fetchpriority="high" decoding="async" alt="Dra. Hosana Melo, implantodontista e responsável técnica, na recepção do Espaço Odontológico em Feu Rosa, Serra/ES">
+      <span class="selo-nome"><b>Dra. Hosana Melo</b> · CRO-ES 5226</span>
       <a class="selo-foto" href="https://www.google.com/maps/place/Espa%C3%A7o+Odontol%C3%B3gico/@-20.1741671,-40.2072274,17z" target="_blank" rel="noopener">
         <span class="nota">5,0</span>
         <span class="txt"><span class="estrelas" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span><small>178 avaliações no Google</small></span>
@@ -492,6 +505,25 @@ footer a:hover{color:#fff;text-decoration:underline}
         <span class="ir"><svg class="ico-zap" aria-hidden="true"><use href="#i-wa"/></svg>Falar sobre invisalign</span>
       </a>
   </div></div>
+</section>
+
+<section id="sinais">
+  <div class="wrap">
+    <div class="rv">
+      <span class="eyebrow">Você se reconhece?</span>
+      <h2>O problema quase nunca é &ldquo;só um dente&rdquo;</h2>
+      <p class="lead mt">Quem chega aqui costuma conviver há anos com alguma destas situações — adiando, se adaptando, achando que é assim mesmo. Não precisa ser.</p>
+    </div>
+    <div class="cards rv">
+      <div class="card"><h3>Comer virou cálculo</h3><p>Cortar a maçã em pedacinhos, mastigar só de um lado, recusar o churrasco. Comer, que era prazer, virou logística — e a digestão sente junto.</p></div>
+      <div class="card"><h3>Sorrir virou esforço</h3><p>A mão na frente da boca, o sorriso de lábios fechados na foto, o riso segurado na conversa. A autoestima paga essa conta todos os dias.</p></div>
+      <div class="card"><h3>Falar virou vigilância</h3><p>Prótese que se mexe, insegurança de falar de perto, a cabeça no dente em vez de na conversa. Convívio social não devia cansar.</p></div>
+    </div>
+    <div class="pg-nota rv">
+      <p><b>Situações assim têm tratamento — e ele começa por uma avaliação.</b> Você entende o seu caso, vê o cenário no scanner 3D e recebe o plano por escrito. Depois, decide com calma.</p>
+      <a class="btn btn-zap" href="https://wa.me/5527992031738?text=Ol%C3%A1%21%20Me%20identifiquei%20com%20o%20site%20e%20quero%20agendar%20uma%20avalia%C3%A7%C3%A3o." target="_blank" rel="noopener"><svg class="ico" aria-hidden="true"><use href="#i-wa"/></svg>Quero resolver isso</a>
+    </div>
+  </div>
 </section>
 
 <div class="stats"><div class="wrap"><div class="stats-g">
@@ -591,17 +623,28 @@ footer a:hover{color:#fff;text-decoration:underline}
   </div>
 </section>
 
-<section>
-  <div class="wrap ad-wrap">
-    <div class="ad-g rv">
-      <figure class="ad"><img src="assets/fotos/resultado-01.webp" srcset="assets/fotos/resultado-01.webp 674w, assets/fotos/resultado-01@2x.webp 943w" sizes="(max-width:940px) 88vw, 40vw" width="674" height="900" alt="Paciente do Espaço Odontológico sorrindo na clínica após concluir o tratamento" loading="lazy" decoding="async"><figcaption>Paciente do Espaço Odontológico, depois do tratamento concluído</figcaption></figure>
-    </div>
-    <div class="ad-side rv">
+<section id="resultados">
+  <div class="wrap">
+    <div class="rv">
       <span class="eyebrow">Resultados</span>
-      <h2>Resultado real, paciente real</h2>
-      <p class="lead">Paciente da casa, fotografada na clínica depois de concluir o tratamento. Em reabilitações com implante, você usa prótese provisória do começo ao fim — <strong>não fica sem dente em nenhuma etapa</strong>.</p>
-      <a class="btn btn-zap" style="justify-self:start" href="https://wa.me/5527992031738?text=Ol%C3%A1%21%20Vi%20o%20caso%20no%20site%20e%20quero%20saber%20se%20o%20meu%20tem%20solu%C3%A7%C3%A3o." target="_blank" rel="noopener"><svg class="ico" aria-hidden="true"><use href="#i-wa"/></svg>Meu caso tem solução?</a>
-      <p class="nota-etica">Imagem publicada com autorização de uso de imagem da paciente, conforme o Código de Ética Odontológica. Cada caso é único e o resultado depende da avaliação individual — não há promessa de resultado.</p>
+      <h2>Casos reais, tratados aqui na clínica</h2>
+      <p class="lead mt">Pacientes da casa, com tratamento feito e concluído no Espaço Odontológico. Em reabilitações com implante, você usa prótese provisória do começo ao fim — <strong>não fica sem dente em nenhuma etapa</strong>.</p>
+    </div>
+    <div class="casos rv">
+      <div class="casos-trilho" id="casos-trilho" tabindex="0" role="group" aria-label="Casos clínicos — role horizontalmente para ver todos">
+        <figure class="caso"><img src="assets/fotos/resultado-01.webp" srcset="assets/fotos/resultado-01.webp 674w, assets/fotos/resultado-01@2x.webp 943w" sizes="(max-width:940px) 76vw, 353px" width="674" height="900" alt="Paciente do Espaço Odontológico sorrindo na clínica após concluir o tratamento" loading="lazy" decoding="async"><figcaption>Paciente da casa, fotografada na clínica depois do tratamento concluído</figcaption></figure>
+        <figure class="caso"><img src="assets/fotos/caso-restauracao.webp" srcset="assets/fotos/caso-restauracao.webp 720w, assets/fotos/caso-restauracao@2x.webp 1080w" sizes="(max-width:940px) 76vw, 376px" width="720" height="900" alt="Antes e depois de restauração estética no Espaço Odontológico: dentes desgastados recuperados" loading="lazy" decoding="async"><figcaption>Restauração estética — dentes desgastados, antes e depois</figcaption></figure>
+        <figure class="caso"><img src="assets/fotos/caso-transformacao.webp" srcset="assets/fotos/caso-transformacao.webp 675w, assets/fotos/caso-transformacao@2x.webp 1200w" sizes="(max-width:940px) 76vw, 353px" width="675" height="900" alt="Antes e depois de transformação do sorriso realizada no Espaço Odontológico" loading="lazy" decoding="async"><figcaption>Transformação do sorriso — antes e depois</figcaption></figure>
+        <figure class="caso"><img src="assets/fotos/caso-protese-resultado.webp" srcset="assets/fotos/caso-protese-resultado.webp 900w, assets/fotos/caso-protese-resultado@2x.webp 1024w" sizes="(max-width:940px) 76vw, 470px" width="900" height="900" alt="Sorriso de paciente reabilitada com prótese no Espaço Odontológico, ao fim do tratamento" loading="lazy" decoding="async"><figcaption>Reabilitação com prótese — o sorriso no fim do tratamento</figcaption></figure>
+      </div>
+      <div class="casos-nav" hidden>
+        <button class="casos-btn" type="button" data-dir="-1" aria-label="Caso anterior">&#8249;</button>
+        <button class="casos-btn" type="button" data-dir="1" aria-label="Próximo caso">&#8250;</button>
+      </div>
+    </div>
+    <div class="casos-rodape rv">
+      <a class="btn btn-zap" href="https://wa.me/5527992031738?text=Ol%C3%A1%21%20Vi%20os%20casos%20no%20site%20e%20quero%20saber%20se%20o%20meu%20tem%20solu%C3%A7%C3%A3o." target="_blank" rel="noopener"><svg class="ico" aria-hidden="true"><use href="#i-wa"/></svg>Meu caso tem solução?</a>
+      <p class="nota-etica">Imagens publicadas com autorização de uso de imagem dos pacientes, conforme o Código de Ética Odontológica. Cada caso é único e o resultado depende da avaliação individual — não há promessa de resultado.</p>
     </div>
   </div>
 </section>
@@ -859,6 +902,17 @@ footer a:hover{color:#fff;text-decoration:underline}
   document.addEventListener('keydown',function(e){
     if(e.key==='Escape'&&menu.classList.contains('aberto')){setMenu(false);burger.focus();}
   });
+
+  // Setas do carrossel de casos: a rolagem nativa já funciona sem isto;
+  // as setas só aparecem quando o script está de pé para movê-las.
+  var trilho=document.getElementById('casos-trilho'),casosNav=document.querySelector('.casos-nav');
+  if(trilho&&casosNav){
+    casosNav.hidden=false;
+    casosNav.addEventListener('click',function(e){
+      var b=e.target.closest('.casos-btn');if(!b)return;
+      trilho.scrollBy({left:trilho.clientWidth*.8*Number(b.dataset.dir),behavior:'smooth'});
+    });
+  }
 
   var alvos=[].slice.call(document.querySelectorAll('.rv'));
   var reduz=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
