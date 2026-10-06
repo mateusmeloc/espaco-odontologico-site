@@ -1,1 +1,12 @@
+# Sistema
+.DS_Store
+
+# Ambiente / segredos
+.env
+.env.*
+
+# Fotos originais e triagem do Drive: ficam fora do git (fotos clínicas de paciente; guardar só local/Drive)
 _drive/
+fotos-originais/
+*.heic
+*.HEIC
