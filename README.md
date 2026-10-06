@@ -1,57 +1,78 @@
 # Espaço Odontológico — site institucional
 
-Site one-page da clínica Espaço Odontológico (Feu Rosa, Serra/ES).
-Responsável técnica: Dra. Hosana A. S. Melo — CRO-ES 5226.
+Site one-page da clínica **Espaço Odontológico** (Feu Rosa, Serra/ES), no ar em
+**[www.espacoodontologicoserra.com.br](https://www.espacoodontologicoserra.com.br)**.
 
-**Status:** prévia V7 — fotos reais da estrutura no ar, aguardando aprovação da Dra. Hosana.
+É um site estático, sem framework e sem dependência de runtime: um único
+`index.html` gerado por um build em Python, fotos otimizadas em WebP e hospedagem
+gratuita no GitHub Pages.
 
-## Como funciona
+## O que tem
 
-**Nunca edite `index.html` direto — ele é gerado.** A fonte de verdade é
-`_build/template.html`; o build embute a marca como data URI e escreve o
-`index.html`.
+- **12 seções** numa página só: topo, sinais, tratamentos, avaliações, resultados,
+  clínica, estrutura, história, princípios, formas de pagamento, dúvidas e local
+- **Foco em conversão**: botões de WhatsApp com mensagem pré-preenchida
+- **SEO local**: JSON-LD (`Dentist`, `FAQPage` com 8 perguntas, horários, endereço e
+  coordenadas), `canonical`, Open Graph e `lang="pt-BR"`
+- **Imagens responsivas**: cada foto em duas larguras (`srcset`), carregamento
+  preguiçoso e fallback quando um arquivo falha
+- **Leve**: HTML de ~115 KB (marca e favicon embutidos como data URI), fotos como
+  arquivos separados para ficarem em cache
+
+## Estrutura
+
+| Caminho | Função |
+|---|---|
+| `_build/template.html` | **fonte do site** — é aqui que se edita |
+| `_build/build.py` | embute a marca no template e escreve o `index.html` |
+| `_build/prepare-fotos.py` | converte as fotos originais em WebP (900 px e `@2x`) |
+| `index.html` | arquivo final servido pelo Pages — **gerado, não edite direto** |
+| `assets/fotos/` | fotos da clínica já otimizadas |
+| `assets/logo.webp`, `favicon.png` | marca, embutida em base64 no HTML |
+| `CNAME` | domínio próprio do GitHub Pages |
+
+## Como rodar
 
 ```bash
 python3 _build/build.py          # template + assets -> index.html
+open index.html                  # abre direto no navegador, sem servidor
 ```
 
-Fotos da clínica são **arquivos separados** em `assets/fotos/`, não base64:
-carregam sob demanda, ficam em cache e mantêm o HTML abaixo de 100 KB. Para
-adicionar ou trocar fotos, salve os originais em `fotos-originais/` e rode:
+O build aborta (em vez de gerar um site quebrado) se faltar um arquivo ou sobrar
+um placeholder no template.
+
+Para adicionar ou trocar fotos, coloque os originais em `fotos-originais/` (pasta
+local, **fora do git**) e rode:
 
 ```bash
-python3 _build/prepare-fotos.py  # originais -> assets/fotos/*.webp (900px e @2x)
+python3 _build/prepare-fotos.py  # originais -> assets/fotos/*.webp
 python3 _build/build.py
 ```
 
-`prepare-fotos.py` precisa do `cwebp` (`brew install webp`); `sips` já vem no
-macOS. Só reprocessa o que mudou.
+`prepare-fotos.py` usa `sips` (já vem no macOS) e `cwebp` (`brew install webp`) e só
+reprocessa o que mudou.
 
-| Arquivo | Uso |
-|---|---|
-| `_build/template.html` | fonte do site — é aqui que se edita |
-| `assets/logo-original.png` | 900×227, fonte da marca |
-| `assets/logo.webp` | 500 px, embutido em base64 no HTML |
-| `assets/favicon.png` | 64 px, embutido em base64 |
-| `assets/fotos/` | fotos da clínica, servidas como arquivo |
-| `fotos-originais/` | originais em alta, entrada do `prepare-fotos.py` |
+## Publicação
 
-## Pendências antes de publicar no domínio definitivo
+O Pages serve a `main` pela raiz. O DNS fica no Registro.br: `www` aponta (CNAME)
+para o GitHub Pages e o domínio sem `www` usa os IPs do Pages. Para publicar uma
+mudança: editar o template, rodar o build e dar push.
 
-- [ ] **Antes/depois** — os 2 quadros "Foto em produção" que restam. As URLs antigas do GreatPages estão em 404 e não há substituto local
-- [ ] **Fotos da Dra. Hosana** — hoje há uma só, ainda em hotlink do Wix
-- [ ] Frase da Dra. Hosana para o bloco da história
-- [ ] Seção da equipe completa (8 cirurgiãs-dentistas)
-- [ ] Logos oficiais Invisalign e Neodent (baixar dos portais de parceiro) — hoje as parcerias aparecem só como texto
-- [ ] Apontar `espacoodontologicoserra.com.br` no Registro.br (o HTML já está com esse domínio no canonical, og:url e schema)
-- [ ] GA4, Meta Pixel e Search Console no dia da publicação
+## Fotos e privacidade
+
+Fotos de pacientes só entram no site com autorização de uso de imagem. Os arquivos
+originais (alta resolução, com metadados) ficam **fora do repositório** — `.gitignore`
+bloqueia `fotos-originais/`, `_drive/` e `.heic` — e só as versões otimizadas, sem
+metadados, vão para `assets/fotos/`.
 
 ## Conformidade
 
-Sem comparação com concorrentes (art. 44 do Código de Ética Odontológica), sem
-preço, sem promessa de resultado. Antes/depois com nota de autorização de uso de
-imagem. Responsável técnica e CRO no rodapé.
+O conteúdo segue o Código de Ética Odontológica: sem comparação com concorrentes,
+sem preço e sem promessa de resultado. O `aggregateRating` foi removido do JSON-LD de
+propósito, porque o Google desencoraja a clínica marcar a própria nota sem os reviews
+individuais; o bloco está comentado no template, caso a decisão mude.
 
-O `aggregateRating` foi removido do JSON-LD de propósito — o Google desencoraja
-marcar a própria nota sem os reviews individuais. O bloco está comentado no
-`index.html` para reverter, se for a decisão.
+## Licença
+
+Todos os direitos reservados. Código, textos e imagens são da clínica e não têm
+licença de reuso. O repositório é público para mostrar a forma como o site foi feito.
