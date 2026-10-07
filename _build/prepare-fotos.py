@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
-"""Converte as fotos de fotos-originais/ para WebP otimizado em assets/fotos/.
+"""Converts the photos in fotos-originais/ to optimized WebP in assets/fotos/.
 
     python3 _build/prepare-fotos.py
 
-Gera duas larguras por foto — 900px para a grade e 1600px para o lightbox —
-mais uma miniatura base64 usada como placeholder enquanto a imagem carrega.
-Só reprocessa o que mudou. Depende de sips e cwebp, ambos já no macOS
-(cwebp vem do Homebrew: brew install webp).
+Produces two widths per photo — 900px for the grid and 1600px (@2x) for the
+lightbox. Only reprocesses what changed. Needs sips and cwebp: sips ships with
+macOS, cwebp comes from Homebrew (brew install webp).
 """
 import pathlib
 import re
@@ -39,24 +38,24 @@ def medir(caminho: pathlib.Path) -> tuple[int, int]:
 def executar(cmd: list[str]) -> None:
     r = subprocess.run(cmd, capture_output=True)
     if r.returncode:
-        raise SystemExit(f"falhou: {' '.join(cmd)}\n{r.stderr.decode()[:400]}")
+        raise SystemExit(f"failed: {' '.join(cmd)}\n{r.stderr.decode()[:400]}")
 
 
 def main() -> int:
     for ferramenta in ("sips", "cwebp"):
         if not shutil.which(ferramenta):
-            print(f"ERRO: {ferramenta} não encontrado."
-                  f"{' Instale com: brew install webp' if ferramenta == 'cwebp' else ''}",
+            print(f"ERROR: {ferramenta} not found."
+                  f"{' Install it with: brew install webp' if ferramenta == 'cwebp' else ''}",
                   file=sys.stderr)
             return 1
 
     if not ORIGINAIS.is_dir():
-        print(f"ERRO: {ORIGINAIS} não existe.", file=sys.stderr)
+        print(f"ERROR: {ORIGINAIS} does not exist.", file=sys.stderr)
         return 1
 
     fontes = sorted(f for f in ORIGINAIS.iterdir() if f.suffix in EXTS)
     if not fontes:
-        print(f"Nenhuma imagem em {ORIGINAIS.name}/. Salve as fotos lá e rode de novo.")
+        print(f"No images in {ORIGINAIS.name}/. Save the photos there and run again.")
         return 1
 
     DESTINO.mkdir(parents=True, exist_ok=True)
@@ -71,7 +70,7 @@ def main() -> int:
             saida = DESTINO / f"{base}{sufixo}.webp"
             if saida.exists() and saida.stat().st_mtime > origem.stat().st_mtime:
                 continue
-            # nunca ampliar: uma foto pequena virava um @2x borrado e pesado
+            # never upscale: a small photo would become a blurry, heavy @2x
             alvo = min(largura, maior)
             inter = tmp / f"{base}{sufixo}.png"
             executar(["sips", "-Z", str(alvo), str(origem), "--out", str(inter)])
@@ -82,8 +81,8 @@ def main() -> int:
         print(f"  {base:<28} {grade.stat().st_size // 1024:>4} KB")
 
     shutil.rmtree(tmp, ignore_errors=True)
-    print(f"\n{len(fontes)} fotos · {total / 1024:,.0f} KB no total em assets/fotos/")
-    print("Agora rode: python3 _build/build.py")
+    print(f"\n{len(fontes)} photos · {total / 1024:,.0f} KB total in assets/fotos/")
+    print("Now run: python3 _build/build.py")
     return 0
 
 

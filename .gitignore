@@ -5,8 +5,11 @@
 .env
 .env.*
 
-# Fotos originais e triagem do Drive: ficam fora do git (fotos clínicas de paciente; guardar só local/Drive)
+# Original photos and Drive triage: kept out of git (clinical patient photos; store only locally / on Drive)
 _drive/
 fotos-originais/
 *.heic
 *.HEIC
+
+# Python
+__pycache__/

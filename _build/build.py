@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
-"""Monta o index.html embutindo os assets de assets/ como data URI.
+"""Builds index.html by inlining the files in assets/ as data URIs.
 
-Fonte de verdade: _build/template.html. Nunca edite index.html direto —
-ele é gerado e sobrescrito.
+Source of truth: _build/template.html. Never edit index.html directly —
+it is generated and overwritten.
 
     python3 _build/build.py
 
-Cada placeholder __NOME_B64__ no template é trocado pelo base64 do arquivo
-correspondente em assets/ (ver MAPA). Falta de arquivo ou placeholder órfão
-aborta o build em vez de gerar um site quebrado.
+Each __NAME_B64__ placeholder in the template is replaced by the base64 of the
+matching file in assets/ (see MAPA). A missing file or an orphan placeholder
+aborts the build instead of producing a broken site.
 """
 import base64
 import pathlib
@@ -20,9 +20,9 @@ TEMPLATE = RAIZ / "_build" / "template.html"
 SAIDA = RAIZ / "index.html"
 ASSETS = RAIZ / "assets"
 
-# placeholder -> arquivo em assets/
-# Só a marca é embutida. As fotos da clínica ficam como arquivos soltos em
-# assets/fotos/ — carregam sob demanda, ficam em cache e não engordam o HTML.
+# placeholder -> file in assets/
+# Only the brand assets are inlined. The clinic photos stay as separate files in
+# assets/fotos/ — they load on demand, get cached, and do not bloat the HTML.
 MAPA = {
     "__LOGO_B64__": "logo.webp",
     "__FAV_B64__": "favicon.png",
@@ -38,24 +38,24 @@ def main() -> int:
             continue
         caminho = ASSETS / rel
         if not caminho.is_file():
-            print(f"ERRO: {ph} usa {rel}, que não existe em assets/", file=sys.stderr)
+            print(f"ERROR: {ph} points to {rel}, which does not exist in assets/", file=sys.stderr)
             return 1
         html = html.replace(ph, base64.b64encode(caminho.read_bytes()).decode())
         usados += 1
 
     orfaos = sorted(set(re.findall(r"__[A-Z0-9_]+_B64__", html)))
     if orfaos:
-        print(f"ERRO: placeholders sem asset correspondente: {', '.join(orfaos)}", file=sys.stderr)
+        print(f"ERROR: placeholders with no matching asset: {', '.join(orfaos)}", file=sys.stderr)
         return 1
 
     SAIDA.write_text(html, encoding="utf-8")
     kb = len(html.encode()) / 1024
     fotos = sorted((ASSETS / "fotos").glob("*.webp")) if (ASSETS / "fotos").is_dir() else []
     grade = [f for f in fotos if not f.stem.endswith("@2x")]
-    print(f"index.html gerado: {kb:,.1f} KB · {usados} assets embutidos"
-          f" · {len(grade)} fotos em assets/fotos/")
+    print(f"index.html built: {kb:,.1f} KB · {usados} assets inlined"
+          f" · {len(grade)} photos in assets/fotos/")
     if kb > 250:
-        print(f"AVISO: {kb:,.0f} KB de HTML é pesado para 4G — fotos deveriam ser arquivos, não base64.")
+        print(f"WARNING: {kb:,.0f} KB of HTML is heavy on 4G — photos should be files, not base64.")
     return 0
 
 
