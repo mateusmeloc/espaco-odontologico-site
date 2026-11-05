@@ -47,7 +47,8 @@ open index.html                  # opens straight in the browser, no server need
 ```
 
 The build aborts (instead of producing a broken site) if a file is missing or a placeholder
-is left in the template.
+is left in the template. It also aborts if a favicon link is inline base64 or points to a
+missing or non-square file — the three ways the icon silently disappears from Google.
 
 If the logo changes, regenerate the icons (needs [uv](https://docs.astral.sh/uv/), which
 fetches Pillow into a throwaway environment — nothing is installed in the project):

@@ -1,6 +1,6 @@
 # /// script
 # requires-python = ">=3.10"
-# dependencies = ["pillow>=11"]
+# dependencies = ["pillow==13.0.0"]  # pinned: another version may write different bytes
 # ///
 """Generates the site icons (favicon) from assets/logo-original.png.
 
@@ -16,9 +16,11 @@ Outputs (site root):
     icon-192.png          192 px, the one Google prefers (larger than 48 px)
     apple-touch-icon.png  180 px, iPhone home screen
 
-The flower is cut from the logo automatically: the first fully transparent
-column after FLOWER_MIN_X is the border between the flower and the text. If
-that border is not found, the script aborts instead of writing a broken icon.
+The flower is cut from the logo automatically, at any logo size: it starts at
+the first column with ink and ends at the next fully transparent column (the
+gap before the text). If there is no such gap, or the cut is not roughly
+square (it took text along), the script aborts instead of writing a broken
+icon.
 """
 
 import sys
@@ -29,21 +31,37 @@ from PIL import Image
 ROOT = Path(__file__).resolve().parent.parent
 LOGO = ROOT / "assets" / "logo-original.png"
 
-FLOWER_MIN_X = 150  # the flower is wider than this; the text starts after it
 ALPHA_EMPTY = 8  # alpha below this counts as transparent (antialiasing noise)
+MAX_ASPECT = 1.25  # the flower is roughly square; a wider cut took text along
 BACKGROUND = (255, 255, 255, 255)  # white: the navy flower stays visible in dark mode
+
+
+class IconError(Exception):
+    """The logo does not look like what this script expects."""
 
 
 def cut_flower(logo: Image.Image) -> Image.Image:
     alpha = logo.getchannel("A")
     width, height = logo.size
-    for x in range(FLOWER_MIN_X, width):
-        if alpha.crop((x, 0, x + 1, height)).getextrema()[1] < ALPHA_EMPTY:
-            break
-    else:
-        sys.exit("ERROR: no transparent column between the flower and the text")
-    mask = alpha.crop((0, 0, x, height)).point(lambda v: 255 if v >= ALPHA_EMPTY else 0)
-    return logo.crop(mask.getbbox())
+
+    def empty(x: int) -> bool:
+        return alpha.crop((x, 0, x + 1, height)).getextrema()[1] < ALPHA_EMPTY
+
+    start = next((x for x in range(width) if not empty(x)), None)
+    if start is None:
+        raise IconError("the logo is fully transparent")
+    end = next((x for x in range(start, width) if empty(x)), None)
+    if end is None:
+        raise IconError("no transparent column between the flower and the text")
+
+    mask = alpha.crop((0, 0, end, height)).point(lambda v: 255 if v >= ALPHA_EMPTY else 0)
+    flower = logo.crop(mask.getbbox())
+    if not 1 / MAX_ASPECT <= flower.width / flower.height <= MAX_ASPECT:
+        raise IconError(
+            f"the cut is {flower.width}x{flower.height} px, not square:"
+            " it probably took part of the text along"
+        )
+    return flower
 
 
 def square_icon(flower: Image.Image, side: int, margin: float) -> Image.Image:
@@ -56,10 +74,14 @@ def square_icon(flower: Image.Image, side: int, margin: float) -> Image.Image:
 
 
 def main() -> int:
-    if not LOGO.is_file():
-        print(f"ERROR: {LOGO.relative_to(ROOT)} does not exist", file=sys.stderr)
+    try:
+        if not LOGO.is_file():
+            raise IconError(f"{LOGO.relative_to(ROOT)} does not exist")
+        with Image.open(LOGO) as logo:
+            flower = cut_flower(logo.convert("RGBA"))
+    except IconError as error:
+        print(f"ERROR: {error}", file=sys.stderr)
         return 1
-    flower = cut_flower(Image.open(LOGO).convert("RGBA"))
 
     # Tiny sizes get a thinner margin so the flower is not a dot in the tab.
     ico = {side: square_icon(flower, side, 0.04) for side in (16, 32, 48)}
