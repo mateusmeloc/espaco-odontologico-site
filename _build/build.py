@@ -21,11 +21,12 @@ SAIDA = RAIZ / "index.html"
 ASSETS = RAIZ / "assets"
 
 # placeholder -> file in assets/
-# Only the brand assets are inlined. The clinic photos stay as separate files in
+# Only the logo is inlined. The clinic photos stay as separate files in
 # assets/fotos/ — they load on demand, get cached, and do not bloat the HTML.
+# The favicon is NOT inlined either: Google only shows it in search results when
+# it is a file it can download (see _build/make-icons.py).
 MAPA = {
     "__LOGO_B64__": "logo.webp",
-    "__FAV_B64__": "favicon.png",
 }
 
 
